@@ -1,0 +1,90 @@
+.audioRecorderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.buttonsContainer {
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.timer {
+  margin-left: 20px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.audioInput {
+  margin: 20px 0;
+}
+
+.audioPlayer {
+  margin-top: 20px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+}
+
+form button {
+  margin-left: 10px;
+  background-color: #4CAF50; /* Green background */
+  color: white;
+}
+
+.waveformButton, .spotKeywordButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.waveformButton {
+  background-color: #007bff; /* Blue */
+  color: white;
+}
+
+.waveformButton:hover, .waveformButton:focus {
+  background-color: #0056b3; /* Darker blue */
+  transform: translateY(-2px);
+}
+
+.spotKeywordButton {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+.spotKeywordButton:hover, .spotKeywordButton:focus {
+  background-color: #218838; /* Darker green */
+  transform: translateY(-2px);
+}
+
+#waveform {
+  width: 100%;
+  height: 200px; /* Adjust height as needed */
+}
