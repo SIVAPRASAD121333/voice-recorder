@@ -14,13 +14,13 @@ function Navbar() {
         <li>
           <a href="#">
             <FaLanguage />
-            User Language
+          Input Language
           </a>
         </li>
         <li>
           <a href="#">
             <FaEnvelope />
-            Contact Us
+            Contact us
           </a>
         </li>
       </ul>

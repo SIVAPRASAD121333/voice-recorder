@@ -49,6 +49,25 @@ function AudioRecorder() {
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent the form from actually submitting
     setSubmittedAudioURL(audioURL); // Set the submitted audio URL
+
+    if (audioURL) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', audioURL, true);
+      xhr.responseType = 'blob';
+
+      xhr.onload = function () {
+        if (this.status === 200) {
+          const downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(this.response);
+          downloadLink.download = 'recorded_audio.wav';
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+        }
+      };
+
+      xhr.send();
+    }
   };
 
   const startTimer = () => {
@@ -101,28 +120,29 @@ function AudioRecorder() {
     return () => ws && ws.destroy();
   }, []); // Removed dependency on waveSurfer
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (waveSurfer && submittedAudioURL) {
+  //     waveSurfer.load(submittedAudioURL);
+  //     waveSurfer.on("ready", () => waveSurfer.play());
+  //   }
+  // }, [submittedAudioURL, waveSurfer]);
+
+  const handleWaveform = () => {
+    console.log('handleWaveform called');
+
     if (waveSurfer && submittedAudioURL) {
+      console.log('loading url:', submittedAudioURL);
+
       waveSurfer.load(submittedAudioURL);
-      waveSurfer.on("ready", () => waveSurfer.play());
+
+      waveSurfer.once('ready', () => {
+        console.log('waveform ready');
+        waveSurfer.play();
+      });
+
+      window.dispatchEvent(new Event('resize'));
     }
-  }, [submittedAudioURL, waveSurfer]);
-const handleWaveform = () => {
-  console.log('handleWaveform called');
-
-  if (waveSurfer && submittedAudioURL) {
-    console.log('loading url:', submittedAudioURL);
-
-    waveSurfer.load(submittedAudioURL);
-
-    waveSurfer.once('ready', () => {
-      console.log('waveform ready');
-      waveSurfer.play();
-    });
-
-    window.dispatchEvent(new Event('resize'));
-  }
-};
+  };
 
   return (
     <div className={styles.audioRecorderContainer}>
@@ -145,7 +165,10 @@ const handleWaveform = () => {
           onChange={handleAudioFileChange}
           className={styles.audioInput}
         />
-        <button type="submit">Submit</button>
+        {/* <button type="submit">Submit</button> */}
+        <button accept="audio/*"
+          onChange={handleAudioFileChange}
+          className={styles.audioInput}>Submit & Download</button>
       </form>
       {submittedAudioURL && (
         <div className={styles.audioPlayer}>
@@ -155,14 +178,15 @@ const handleWaveform = () => {
 
       {/* New buttons for Waveform and Spot Keyword */}
       <div className={styles.buttonsContainer}>
-        <button className={styles.waveformButton} onClick={handleWaveform}>
-          Waveform
-        </button>
-        <button className={styles.spotKeywordButton}>Spot Keyword</button>
+        {/* <button className={styles.waveformButton} onClick={handleWaveform}>
+      
+        </button> */}
+        {/* <button className={styles.spotKeywordButton}>Spot Keyword</button> */}
       </div>
 
       {/* Waveform container */}
       <div id="waveform" ref={waveformRef}></div>
+      
     </div>
   );
 }
